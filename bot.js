@@ -118,6 +118,7 @@ function readTextFile(file) {
 // ==========================================
 // READ PDF FILE
 // ==========================================
+
 async function readPDFFile(file) {
   // Load PDF.js if it isn't already loaded
   if (!window.pdfjsLib) {
@@ -127,12 +128,10 @@ async function readPDFFile(file) {
     );
   }
 
-  // Configure the matching PDF.js worker
+  // Configure the PDF.js worker
   window.pdfjsLib.GlobalWorkerOptions.workerSrc =
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs";
 
-  // Keep the rest of your existing readPDFFile function below this point
-}
   const arrayBuffer = await file.arrayBuffer();
 
   const pdf = await window.pdfjsLib.getDocument({
@@ -143,7 +142,6 @@ async function readPDFFile(file) {
 
   for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
     const page = await pdf.getPage(pageNumber);
-
     const textContent = await page.getTextContent();
 
     const pageText = textContent.items.map((item) => item.str).join(" ");
